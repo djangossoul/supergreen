@@ -1,5 +1,12 @@
-import { clerkMiddleware } from "@clerk/nextjs/server";
+import { clerkMiddleware, createRouteMatcher } from '@clerk/nextjs/server'
 import { NextResponse } from 'next/server'
+
+//const isPublicRoute = createRouteMatcher(['/site', '/api/uploadthing', '/sign-in', '/sign-up'])
+
+/*export function loggingMiddleware(request: NextRequest) {
+  console.log(`Received ${request.method} request to ${request.url} at ${new Date()}`);
+  retuTyern NextResponse.next();
+}*/
 
 // This example protects all routes including api/trpc routes
 // Please edit this to allow other routes to be public as needed.
@@ -17,7 +24,7 @@ export default clerkMiddleware({
       searchParams.length > 0 ? `?${searchParams}` : ''
     }`
 
-    //if subdomain exists
+    /*//if subdomain exists
     const customSubDomain = hostname
       .get('host')
       ?.split(`${process.env.NEXT_PUBLIC_DOMAIN}`)
@@ -29,15 +36,11 @@ export default clerkMiddleware({
       )
     }
 
-    if (url.pathname === '/sign-in' || 
-      url.pathname === '/sign-up') {
-      return NextResponse.redirect(new URL(`/agency/sign-in`, req.url))
+    if (url.pathname === '/sign-in' || url.pathname === '/sign-up') {
+      return NextResponse.redirect(new URL('/agency/sign-in', req.url))
     }
 
-    if (
-      url.pathname === '/' ||
-      (url.pathname === '/site' && url.host === process.env.NEXT_PUBLIC_DOMAIN)
-    ) {
+    if ( url.pathname === '/' || (url.pathname === '/site' && url.host === process.env.NEXT_PUBLIC_DOMAIN)) {
       return NextResponse.rewrite(new URL('/site', req.url))
     }
 
@@ -46,15 +49,15 @@ export default clerkMiddleware({
       url.pathname.startsWith('/subaccount')
     ) {
       return NextResponse.rewrite(new URL(`${pathWithSearchParams}`, req.url))
-    }
-  },  
+    }*/
+  },
 })
 
 export const config = {
-    matcher: [
-      // Skip Next.js internals and all static files, unless found in search params
-      '/((?!_next|[^?]*\\.(?:html?|css|js(?!on)|jpe?g|webp|png|gif|svg|ttf|woff2?|ico|csv|docx?|xlsx?|zip|webmanifest)).*)',
-      // Always run for API routes
-      '/(api|trpc)(.*)',
-    ],
-  };
+  matcher: [
+    // Skip Next.js internals and all static files, unless found in search params
+    '/((?!_next|[^?]*\\.(?:html?|css|js(?!on)|jpe?g|webp|png|gif|svg|ttf|woff2?|ico|csv|docx?|xlsx?|zip|webmanifest)).*)',
+    // Always run for API routes
+    '/(api|trpc)(.*)',
+  ],
+}
